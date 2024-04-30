@@ -40,7 +40,9 @@ const GetProducts = () => {
         {products.map((product) => (
           <li className="product" key={product.id}>
             <h3>{product.title.rendered}</h3>
-            <img src={product.featured_media} alt={product.title.rendered} />
+            {product.acf && product.acf.image && (
+              <img src={product.acf.image.url} alt={product.title.rendered} />
+            )}
             <p
               dangerouslySetInnerHTML={{
                 __html: product.content.rendered,
