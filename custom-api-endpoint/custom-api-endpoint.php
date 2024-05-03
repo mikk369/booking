@@ -20,7 +20,7 @@ function register_bookings_endpoint() {
 
     register_rest_route(
         'bookings/v1',
-        '/postBooking',
+        '/add-booking',
         array(
             'methods' => 'POST',
             'callback' => 'post_booking',
@@ -35,6 +35,7 @@ function get_all_bookings() {
     $results = $wpdb->get_results("SELECT * FROM $table_name");
     return $results;
 }
+
 function post_booking($request) {
     global $wpdb;
     $table_name = 'bookings';
@@ -45,6 +46,7 @@ function post_booking($request) {
             'name' => $request['name'],
             'email' => $request['email'],
         )
-        );
-    return $rows;
+    );
+    
+    return new WP_REST_Response( array('message' => 'Booking added successfully' ), 200 );
 }
