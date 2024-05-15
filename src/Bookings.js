@@ -36,18 +36,20 @@ const Bookings = () => {
         return;
       }
 
-      const formData = {
-        startdate: startDate.toISOString(),
-        enddate: endDate.toISOString(),
-        email: document.getElementById('email').value,
-      };
+      const startdate = startDate.toISOString().split('T')[0];
+      const enddate = endDate.toISOString().split('T')[0];
+
+    const formData = {
+      startdate: startdate,
+      enddate: enddate,
+      email: document.getElementById('email').value,
+    };
 
       const response = await axios.post(
         'https://webcodes.ee/test/wp-json/bookings/v1/add-booking',
         formData
       );
-      console.log(formData);
-      console.log('Booking added successfully:', response.data);
+      console.log('Booking added successfully');
     } catch (error) {
       console.error('Error adding booking:', error);
     }
