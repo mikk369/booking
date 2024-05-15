@@ -9,7 +9,7 @@ Author: Mike
 function custom_dashboard_widget() {
     wp_add_dashboard_widget(
         'custom_dashboard_widget_id',
-        'Custom Dashboard Widget',
+        'Custom bookings info',
         'render_custom_dashboard_widget'
     );
 }
@@ -18,13 +18,17 @@ add_action('wp_dashboard_setup', 'custom_dashboard_widget');
 // Callback function to render the content of the widget
 function render_custom_dashboard_widget() {
     global $wpdb;
-    $table_name = $wpdb->prefix . 'bookings';
+    $table_name = 'bookings';
     $bookings = $wpdb->get_results("SELECT * FROM $table_name");
 
-    // Render HTML content
-    echo '<ul>';
+    // Store HTML content in a variable
+    $output = '<ul>';
     foreach ($bookings as $booking) {
-        echo '<li>' . esc_html($booking->name) . ': ' . esc_html($booking->email) . '</li>';
+        $output .= '<li>' . esc_html($booking->startdate) . ': ' . esc_html($booking->enddate ) . ': ' . esc_html($booking->email) . '</li>';
     }
-    echo '</ul>';
+    $output .= '</ul>';
+
+    // Return the HTML content
+    echo $output;
 }
+?>
