@@ -51,8 +51,6 @@ const GetProducts = () => {
               dangerouslySetInnerHTML={{
                 __html: product.short_description,
               }}></span>
-
-            {/* Add more product details as needed */}
           </li>
         ))}
       </ul>
