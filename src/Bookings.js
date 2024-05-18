@@ -49,6 +49,10 @@ const Bookings = () => {
         'https://webcodes.ee/test/wp-json/bookings/v1/add-booking',
         formData
       );
+      setStartDate(null);
+      setEndDate(null);
+      document.getElementById('email').value = '';
+      
       console.log('Booking added successfully');
     } catch (error) {
       console.error('Error adding booking:', error);
