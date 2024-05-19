@@ -44,6 +44,7 @@ const GetProducts = () => {
               <img src={product.acf.image.url} alt={product.title.rendered} />
             )}
             <p
+              className="content-text"
               dangerouslySetInnerHTML={{
                 __html: product.content.rendered,
               }}></p>
