@@ -5,6 +5,7 @@ import axios from 'axios';
 const Bookings = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [bookedDates, setBookedDates] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -14,6 +15,25 @@ const Bookings = () => {
       setError(false);
     }
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    const fetchBookedDates = async () => {
+      try {
+        const response = await axios.get(
+          'https://webcodes.ee/test/wp-json/bookings/v1/bookings'
+        );
+        console.log(response);
+        const dates = response.data.map((booking) => ({
+          startDate: new Date(booking.startdate),
+          endDate: new Date(booking.enddate),
+        }));
+        setBookedDates(dates);
+      } catch (error) {
+        console.error('Error fetching booked dates:', error);
+      }
+    };
+    fetchBookedDates();
+  }, []);
 
   const handleDateClick = (date) => {
     if (!startDate) {
@@ -36,8 +56,16 @@ const Bookings = () => {
         return;
       }
 
-      const startdate = startDate.toISOString().split('T')[0];
-      const enddate = endDate.toISOString().split('T')[0];
+      // Adjust dates to local time to avoid timezone issues
+      const adjustedStartDate = new Date(
+        startDate.getTime() - startDate.getTimezoneOffset() * 60000
+      );
+      const adjustedEndDate = new Date(
+        endDate.getTime() - endDate.getTimezoneOffset() * 60000
+      );
+
+      const startdate = adjustedStartDate.toISOString().split('T')[0];
+      const enddate = adjustedEndDate.toISOString().split('T')[0];
 
       const formData = {
         startdate: startdate,
@@ -52,11 +80,31 @@ const Bookings = () => {
       setStartDate(null);
       setEndDate(null);
       document.getElementById('email').value = '';
-      
+
+      // Fetch updated booked dates after a new booking
+      const response = await axios.get(
+        'https://webcodes.ee/test/wp-json/bookings/v1/bookings'
+      );
+      const dates = response.data.map((booking) => ({
+        startDate: new Date(booking.startdate),
+        endDate: new Date(booking.enddate),
+      }));
+      setBookedDates(dates);
+
       console.log('Booking added successfully');
     } catch (error) {
       console.error('Error adding booking:', error);
     }
+  };
+
+  const tileClassName = ({ date }) => {
+    return bookedDates.some(
+      ({ startDate, endDate }) =>
+        date >= startDate.setHours(0, 0, 0, 0) &&
+        date <= endDate.setHours(23, 59, 59, 999)
+    )
+      ? 'booked'
+      : '';
   };
 
   return (
@@ -68,6 +116,7 @@ const Bookings = () => {
         view="month"
         onClickDay={handleDateClick}
         value={[startDate, endDate]} // Highlight selected date range
+        tileClassName={tileClassName}
       />
       {startDate && endDate && error && (
         <div style={styles.errorContainer}>

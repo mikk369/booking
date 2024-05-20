@@ -331,25 +331,6 @@ ul {
   background-color: rgb(107 114 128);
 }
 
-/* If you do not wish to show weekends */
-
-/* 
-.react-calendar__month-view__days > .react-calendar__tile,
-.react-calendar__month-view__weekdays__weekday {
-  flex-basis: 20% !important;
-  max-width: 20% !important;
-} 
-
-.react-calendar__month-view__weekdays__weekday:nth-child(6),
-.react-calendar__month-view__weekdays__weekday:nth-child(7) {
-  display: none !important;
-} 
-
-.react-calendar__month-view__days__day--weekend {
-  display: none !important;
-} 
-*/
-
 .react-calendar__month-view__weekdays__weekday {
   padding: 0.75em;
 }
@@ -408,4 +389,10 @@ ul {
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: rgb(238 242 255);
+}
+
+.booked {
+  background-color: red;
+  color: white;
+  pointer-events: none; /* Prevent clicking on booked dates */
 }
