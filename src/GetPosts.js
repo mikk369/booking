@@ -4,29 +4,30 @@ import axios from 'axios';
 const PostList = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPostsAndComments = async () => {
       try {
-        const response = await axios.get(
-          'https://webcodes.ee/test/wp-json/wp/v2/posts'
-        );
-        const postsData = response.data;
+        // Fetch all posts
+        const postsResponse = await axios.get('https://webcodes.ee/test/wp-json/wp/v2/posts');
+        const postsData = postsResponse.data;
 
-        // Fetch comments for each post concurrently
-        const commentsPromises = postsData.map(async (post) => {
-          const commentsResponse = await axios.get(
-            `https://webcodes.ee/test/wp-json/wp/v2/comments?post=${post.id}`
-          );
-          return { ...post, comments: commentsResponse.data };
-        });
+        // Fetch all comments
+        const commentsResponse = await axios.get('https://webcodes.ee/test/wp-json/wp/v2/comments');
+        const commentsData = commentsResponse.data;
 
-        // Wait for all comments to be fetched
-        const postsWithComments = await Promise.all(commentsPromises);
+        // Associate comments with their respective posts
+        const postsWithComments = postsData.map(post => ({
+          ...post,
+          comments: commentsData.filter(comment => comment.post === post.id)
+        }));
+
         setPosts(postsWithComments);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching posts and comments:', error);
+        setError('Failed to load posts and comments');
+      } finally {
         setLoading(false);
       }
     };
@@ -38,6 +39,14 @@ const PostList = () => {
     return (
       <div className="loading-container">
         <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error">{error}</div>
       </div>
     );
   }
@@ -61,11 +70,7 @@ const PostList = () => {
                   {post.comments.map((comment) => (
                     <li key={comment.id}>
                       <strong>{comment.author_name}</strong>:{' '}
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: comment.content.rendered,
-                        }}
-                      />
+                      <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
                     </li>
                   ))}
                 </ul>
