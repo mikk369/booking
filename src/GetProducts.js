@@ -10,7 +10,7 @@ const GetProducts = () => {
       try {
         // Make a GET request to the WooCommerce product endpoint
         const response = await axios.get(
-          `https://webcodes.ee/test/wp-json/wp/v2/products`
+          `https://testwordpress.webcodes.ee/wp-json/wp/v2/products`
         );
         console.log(response.data);
         // Set the retrieved product in the state

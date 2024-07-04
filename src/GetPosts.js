@@ -10,11 +10,11 @@ const PostList = () => {
     const fetchPostsAndComments = async () => {
       try {
         // Fetch all posts
-        const postsResponse = await axios.get('https://webcodes.ee/test/wp-json/wp/v2/posts');
+        const postsResponse = await axios.get('https://testwordpress.webcodes.ee/wp-json/wp/v2/posts');
         const postsData = postsResponse.data;
 
         // Fetch all comments
-        const commentsResponse = await axios.get('https://webcodes.ee/test/wp-json/wp/v2/comments');
+        const commentsResponse = await axios.get('https://testwordpress.webcodes.ee/wp-json/wp/v2/comments');
         const commentsData = commentsResponse.data;
 
         // Associate comments with their respective posts

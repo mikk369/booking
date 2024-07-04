@@ -46,7 +46,7 @@ const Bookings = () => {
       };
 
       await axios.post(
-        'https://webcodes.ee/test/wp-json/bookings/v1/add-booking',
+        'https://testwordpress.webcodes.ee/wp-json/bookings/v1/add-booking',
         formData
       );
       setStartDate(null);
