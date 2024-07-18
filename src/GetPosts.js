@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const PostList = () => {
@@ -56,7 +57,8 @@ const PostList = () => {
       <h2>Recent Posts</h2>
       <ul className="posts">
         {posts.map((post) => (
-          <li className="post" key={post.id}>
+            <Link to={`/post/${post.id}`} key={post.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <li className="post">
             <h3>{post.title.rendered}</h3>
             <div dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
             <p className="author">Author: {post.author}</p>
@@ -77,6 +79,7 @@ const PostList = () => {
               </div>
             )}
           </li>
+            </Link>
         ))}
       </ul>
     </div>

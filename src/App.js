@@ -3,6 +3,7 @@ import GetPosts from './GetPosts';
 import Bookings from './Bookings';
 import GetProducts from './GetProducts';
 import AddFormData from './AddFormData';
+import PostDetail from './PostDetail';
 import NavBar from './NavBar';
 import React from 'react';
 
@@ -13,6 +14,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<GetPosts />} />
+          <Route path="/post/:id" element={<PostDetail />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/getproducts" element={<GetProducts />} />
